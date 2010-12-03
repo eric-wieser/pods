@@ -1,0 +1,15 @@
+<pod>
+    <name>${pod_name}</name>
+
+    <maintainers>
+    </maintainers>
+
+    <summary>
+    </summary>
+
+    <description>
+    </description>
+
+    <requirements>
+    </requirements>
+</pod>
