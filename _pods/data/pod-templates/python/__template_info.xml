@@ -10,7 +10,7 @@
         Makefile
         pod.xml
         python/hello/__init__.py
-        python/hello/hello.py
+        python/hello/main.py
         cmake/pods.cmake
     </manifest>
 </pod_template>
