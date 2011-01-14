@@ -11,9 +11,10 @@ templates.  The policies and templates can be found at:
 Name:         ${pod_name}
 Maintainers:  FILL-ME-IN
 Summary:      FILL-ME-IN
-Description:  FILL-ME-IN
+Description:
+  FILL-ME-IN
+
+Requirements: 
+  FILL-ME-IN
+
 License:      FILL-ME-IN
-
-Requirements: FILL-ME-IN
-
-
