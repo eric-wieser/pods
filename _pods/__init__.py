@@ -49,12 +49,12 @@ def find_pod_dir(abort_on_failure=False):
         else:
             parts = [ ".." ] * n
         dirname = os.path.join(*parts)
-        pname = os.path.join(dirname, "pod.xml")
+        pname = os.path.join(dirname, "cmake", "pods.cmake")
         pnames_checked.append(pname)
         if os.path.exists(pname):
             return dirname
     if abort_on_failure:
-        sys.stderr.write("Unable to find pod.xml.  Tried:\n")
+        sys.stderr.write("Unable to find cmake/pods.cmake.  Tried:\n")
         for pname in pnames_checked:
             sys.stderr.write("   %s\n" % pname)
         sys.exit(1)
@@ -101,7 +101,7 @@ def _instantiate_template(template, dest_dir, name, is_update):
 
             if is_update:
                 s = ""
-                if fname in [ "pod.xml", "CMakeLists.txt" ]:
+                if fname in [ "README", "CMakeLists.txt" ]:
                     info("  Ignoring  %-10s (never overwrite)" % dst_name)
                     s = "n"
                 elif file(dst_name).read() == file(src_name).read():
@@ -215,9 +215,9 @@ def update_pod_func(args):
             fail("Can't find directory %s" % dirname)
 
         # is the directory a pod?
-        podxml_fname = os.path.join(dirname, "pod.xml")
-        if not os.path.exists(podxml_fname):
-            fail("Did not find " + podxml_fname + "\nabort")
+        pods_fname = os.path.join(dirname, "cmake", "pods.cmake")
+        if not os.path.exists(pods_fname):
+            fail("Did not find " + pods_fname + "\nabort")
         #try:
         #    podxml = minidom.parse(podxml_fname)
         #    pod_node = podxml.getElementsByTagName("pod")[0]

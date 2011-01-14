@@ -8,7 +8,7 @@
     <manifest>
         CMakeLists.txt
         Makefile
-        pod.xml
+        README
         python/hello/__init__.py
         python/hello/main.py
         cmake/pods.cmake

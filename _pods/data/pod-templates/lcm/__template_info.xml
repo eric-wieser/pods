@@ -8,7 +8,7 @@
     <manifest>
         CMakeLists.txt
         Makefile
-        pod.xml
+        README
         cmake/lcmtypes.cmake
         cmake/pods.cmake
         lcmtypes/README.txt

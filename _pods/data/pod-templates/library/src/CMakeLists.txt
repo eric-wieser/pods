@@ -13,8 +13,8 @@ pods_install_headers(hello.h DESTINATION hello)
 # make the library public
 pods_install_libraries(hello)
 
-# create a pkg-config file for the library, to make it for other software to
-# use it.
+# create a pkg-config file for the library, to make it easier for other
+# software to use.
 pods_install_pkg_config_file(hello
     CFLAGS
     LIBS -lhello
