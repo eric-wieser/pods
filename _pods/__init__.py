@@ -189,11 +189,18 @@ Available templates:
 """ + _template_docs("pod-templates"))
 
 def update_pod_func(args):
-    if len(args) < 1:
-        help_func(("update-pod",))
-        return 1
-
+    #default to the current directory instead
+    #if len(args) < 1:
+    #    help_func(("update-pod",))
+    #    return 1
+    recursive = False
     dirs = args
+    if ("-R" in args):
+        recursive = True
+        dirs.remove("-R")
+    if (len(dirs)==0):
+        dirs = ["./"]
+        
 
     core_files = [ ("basic", "cmake/pods.cmake"),
                   ("basic", "Makefile"),
@@ -210,6 +217,7 @@ def update_pod_func(args):
     default_answer = ""
 
     # update each directory specified
+    pods_found =0
     for dirname in dirs:
         if not os.path.exists(dirname):
             fail("Can't find directory %s" % dirname)
@@ -217,7 +225,17 @@ def update_pod_func(args):
         # is the directory a pod?
         pods_fname = os.path.join(dirname, "cmake", "pods.cmake")
         if not os.path.exists(pods_fname):
-            fail("Did not find " + pods_fname + "\nabort")
+            if not recursive:
+                fail("Did not find " + pods_fname + "\nabort")
+            else:
+                #add subdirectories
+                for d in os.listdir(dirname):
+                    full_d = os.path.abspath(os.path.join(dirname,d))
+                    if os.path.isdir(full_d) and d[0] != '.' and not d.startswith("build") and not d.startswith("pod-build"):  #don't recurse into . directories such as .svn
+                        dirs.append(full_d)
+                        #print "recursing into %s" % full_d
+                continue
+        pods_found = pods_found+1 
         #try:
         #    podxml = minidom.parse(podxml_fname)
         #    pod_node = podxml.getElementsByTagName("pod")[0]
@@ -253,16 +271,21 @@ def update_pod_func(args):
             # copy the file in
             info("  replacing: " + dst_fname)
             open(dst_fname, "w").write(template_file_contents)
-    info("Done")
+    if (pods_found>0):
+        info("Done updating %d pods" % pods_found)
+    else:
+        info("No pods found! Use the -R option to search recursively")
     return 0
 
 update_pod_cmd = Command("update-pod",
         update_pod_func,
 "Updates core template files in one or more pods",
 """
-Usage: update-pod <directory1> [<directory2> [...]]
+Usage: update-pod [-R] [<directory1> <directory2> [...]]
 
   Updates core template files in one or more pods.
+      Searches for pods in the current directory OR the directories provided
+      -R option makes it recursively search the directories for pods
 
   As newer versions of important pods template files become available
   (e.g., cmake/pods.cmake), you may want to update a pod to use them.  This
