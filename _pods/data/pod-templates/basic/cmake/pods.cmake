@@ -141,6 +141,7 @@ function(pods_install_pkg_config_file)
     install(FILES ${pc_fname} DESTINATION lib/pkgconfig)
     
     # find targets that this pkg-config file depends on
+    if (${pc_libs})
     string(REPLACE " " ";" split_lib ${pc_libs})
     foreach(lib ${split_lib})
         string(REGEX REPLACE "^-l" "" libname ${lib})
@@ -149,6 +150,7 @@ function(pods_install_pkg_config_file)
             set_property(GLOBAL APPEND PROPERTY "PODS_PKG_CONFIG_TARGETS-${pc_name}" ${libname})
         endif() 
     endforeach()
+   endif()
     
 endfunction(pods_install_pkg_config_file)
 
