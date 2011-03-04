@@ -312,8 +312,9 @@ macro(pods_config_search_paths)
         include_directories(${INCLUDE_INSTALL_PATH})
 
         # add build/lib to the link path
-        link_directories(${LIBRARY_INSTALL_PATH})
         link_directories(${LIBRARY_OUTPUT_PATH})
+        link_directories(${LIBRARY_INSTALL_PATH})
+        
 
         # abuse RPATH
         if(${CMAKE_INSTALL_RPATH})
