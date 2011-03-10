@@ -67,7 +67,7 @@
 #
 # ----
 # File: lcmtypes.cmake
-# Distributed with pods version: 11.02.09
+# Distributed with pods version: 11.03.10
 
 cmake_minimum_required(VERSION 2.6.0)
 
@@ -227,7 +227,9 @@ function(lcmtypes_build_c)
         "Description: LCM types for ${PROJECT_NAME}\n"
         "Version: 0.0.0\n"
         "Requires: lcm\n"
-        "Libs: -L\${exec_prefix}/lib -l${libname}\n")
+        "Libs: -L\${exec_prefix}/lib -l${libname}\n"
+        "Cflags: -I\${includedir}\n"
+        )
 
     # mark the pkg-config file for installation to the lib/pkgconfig directory
     install(FILES ${pc_fname} DESTINATION lib/pkgconfig)
