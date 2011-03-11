@@ -244,12 +244,22 @@ function(lcmtypes_build_java)
         return()
     endif()
 
+    # do we have Java?
     find_package(Java)
     if(JAVA_COMPILE STREQUAL JAVA_COMPILE-NOTFOUND OR
        JAVA_ARCHIVE STREQUAL JAVA_ARCHIVE-NOTFOUND)
         message(STATUS "Not building Java LCM type bindings (Can't find Java)")
         return()
     endif()
+
+    # do we have LCM java bindings?  where is lcm.jar?
+    execute_process(COMMAND pkg-config --variable=classpath lcm-java OUTPUT_VARIABLE LCM_JAR_FILE)
+    if(NOT LCM_JAR_FILE)
+        message(STATUS "Not building Java LCM type bindings (Can't find lcm.jar)")
+        return()
+    endif()
+    string(STRIP ${LCM_JAR_FILE} LCM_JAR_FILE)
+    set(LCMTYPES_JAR ${CMAKE_CURRENT_BINARY_DIR}/lcmtypes_${PROJECT_NAME}.jar)
 
     # generate Java bindings for LCM types
     set(_lcmtypes_java_dir ${PROJECT_SOURCE_DIR}/lcmtypes/java)
@@ -288,11 +298,6 @@ function(lcmtypes_build_java)
 
     # get a list of all generated .java files
     file(GLOB_RECURSE _lcmtypes_java_files ${_lcmtypes_java_dir}/*.java)
-
-    # where is lcm.jar?
-    execute_process(COMMAND pkg-config --variable=classpath lcm-java OUTPUT_VARIABLE LCM_JAR_FILE)
-    string(STRIP ${LCM_JAR_FILE} LCM_JAR_FILE)
-    set(LCMTYPES_JAR ${CMAKE_CURRENT_BINARY_DIR}/lcmtypes_${PROJECT_NAME}.jar)
 
     set(java_classpath ${_lcmtypes_java_dir}:${LCM_JAR_FILE})
 
