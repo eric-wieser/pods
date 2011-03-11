@@ -62,30 +62,14 @@ endfunction(pods_install_headers)
 #
 # Install a (list) of executables to bin/
 function(pods_install_executables)
-    if (ARGC GREATER 2)
-        list(GET ARGV -2 checkword)
-        if(checkword STREQUAL DESTINATION)
-            list(GET ARGV -1 dest_dir)
-            list(REMOVE_AT ARGV -1)
-            list(REMOVE_AT ARGV -1)
-        endif()
-    endif()
-    install(TARGETS ${ARGV} RUNTIME DESTINATION bin/${dest_dir})
+    install(TARGETS ${ARGV} RUNTIME DESTINATION bin)
 endfunction(pods_install_executables)
 
 # pods_install_libraries(<library1> ...)
 #
 # Install a (list) of libraries to lib/
 function(pods_install_libraries)
-    if (ARGC GREATER 2)
-        list(GET ARGV -2 checkword)
-        if(checkword STREQUAL DESTINATION)
-            list(GET ARGV -1 dest_dir)
-            list(REMOVE_AT ARGV -1)
-            list(REMOVE_AT ARGV -1)
-        endif()
-    endif()
-    install(TARGETS ${ARGV} LIBRARY DESTINATION lib/${dest_dir} ARCHIVE DESTINATION lib)
+    install(TARGETS ${ARGV} LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 endfunction(pods_install_libraries)
 
 
