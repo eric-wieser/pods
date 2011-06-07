@@ -126,15 +126,14 @@ function(pods_install_pkg_config_file)
     # write the .pc file out
     file(WRITE ${pc_fname}
         "prefix=${CMAKE_INSTALL_PREFIX}\n"
-        "exec_prefix=\${prefix}\n"
-        "libdir=\${exec_prefix}/lib\n"
+        "libdir=\${prefix}/lib\n"
         "includedir=\${prefix}/include\n"
         "\n"
         "Name: ${pc_name}\n"
         "Description: ${pc_description}\n"
         "Requires: ${pc_requires}\n"
         "Version: ${pc_version}\n"
-        "Libs: -L\${exec_prefix}/lib ${pc_libs}\n"
+        "Libs: -L\${libdir} ${pc_libs}\n"
         "Cflags: -I\${includedir} ${pc_cflags}\n")
 
     # mark the .pc file for installation to the lib/pkgconfig directory
