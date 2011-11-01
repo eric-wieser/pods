@@ -212,9 +212,7 @@ def update_pod_func(args):
         full_fname = os.path.join(_pods.data.data_dir(), "pod-templates", 
                     template, template_fname)
         contents = open(full_fname).read()
-        toreplace.append((template_fname, contents))
-
-    default_answer = ""
+        toreplace.append((template_fname, contents, ""))
 
     # update each directory specified
     pods_found =0
@@ -246,26 +244,39 @@ def update_pod_func(args):
         #    continue
 
         # check each template file listed above to see if it's in the pod
-        for template_file, template_file_contents in toreplace:
+        for i in range(0,len(toreplace)):
+            template_file, template_file_contents, default_answer = toreplace[i]
             dst_fname = os.path.join(dirname, template_file)
             if not os.path.exists(dst_fname):
                 continue
 
             # don't do anything if the file is already up-to-date
-            if file(dst_fname).read() == template_file_contents:
+            dst_file_contents = file(dst_fname).read()
+            if dst_file_contents == template_file_contents:
                 info("  up-to-date: " + dst_fname)
                 continue
 
             # prompt user to overwrite
             s = default_answer
-            while not s or s not in "yna":
-                s = raw_input("Overwrite %s? [y/n/a] " % dst_fname).strip().lower()
+            while not s or s not in "ynas":
+                s = raw_input("Overwrite %s? [y/n/a/s (a/s: replace/skip all %s's )] " % ((dst_fname).strip(), template_file))
+
+            if s in "ya" and template_file == "Makefile":
+                makefile_header_len = 50 # ie: "# Default makefile distributed with pods version"
+                if dst_file_contents[0:makefile_header_len]!= template_file_contents[0:makefile_header_len]:
+                    s=""
+                    while not s or s not in "yn":
+                        s = raw_input("Makefile does not have pods header, are you sure you want to overwrite? [y/n] ")
 
             if s == "a":
                 s = "y"
-                default_answer = "y"
-
+                toreplace[i] = (template_file, template_file_contents,"y")
+            elif s == "s":
+                s = "n"
+                toreplace[i] = (template_file, template_file_contents,"n")
+                
             if s != "y":
+                info("  skipping: " + dst_fname)
                 continue
 
             # copy the file in
