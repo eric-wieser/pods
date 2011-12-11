@@ -9,16 +9,12 @@ include(cmake/pods.cmake)
 include(cmake/lcmtypes.cmake)
 lcmtypes_build()
 
-include_directories(${LCMTYPES_INCLUDE_DIRS})
-
 # build two LCM test programs
 add_executable(send_message src/send_message.c)
-target_link_libraries(send_message ${LCMTYPES_LIBS})
-pods_use_pkg_config_packages(send_message lcm)
+pods_use_pkg_config_packages(send_message lcm lcmtypes_${POD_NAME})
 
 add_executable(listener src/listener.c)
-target_link_libraries(listener ${LCMTYPES_LIBS})
-pods_use_pkg_config_packages(listener lcm)
+pods_use_pkg_config_packages(listener lcm lcmtypes_${POD_NAME})
 
 # make exeutables public
 pods_install_executables(send_message listener)
