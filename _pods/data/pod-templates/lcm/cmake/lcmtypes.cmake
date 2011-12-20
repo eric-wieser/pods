@@ -290,14 +290,15 @@ function(lcmtypes_build_cpp)
     foreach(hpp_file ${_lcmtypes_hpp_files})
         file(RELATIVE_PATH __tmp_path ${_lcmtypes_cpp_dir} ${hpp_file})
         file(APPEND ${__agg_hpp_fname} "#include \"${__tmp_path}\"\n")
+        get_filename_component(__tmp_dir ${__tmp_path} PATH)
+        pods_install_headers(${hpp_file} DESTINATION lcmtypes/${__tmp_dir})
     endforeach()
     file(APPEND ${__agg_hpp_fname} "\n#endif\n")
-    list(APPEND _lcmtypes_hpp_files ${__agg_hpp_fname})
+    pods_install_headers(${__agg_hpp_fname} DESTINATION lcmtypes)
     unset(__sanitized_project_name)
     unset(__agg_hpp_fname)
 
-    # make header files and libraries public
-    pods_install_headers(${_lcmtypes_hpp_files} DESTINATION lcmtypes)
+ 
 
     lcmtypes_add_clean_dir("${PROJECT_SOURCE_DIR}/lcmtypes/cpp")
 endfunction()
