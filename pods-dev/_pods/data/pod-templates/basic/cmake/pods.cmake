@@ -260,7 +260,7 @@ function(pods_install_python_packages py_src_dir)
     else()
         # install any packages within the passed in py_src_dir 
         set(_installed_a_package FALSE)
-        file(GLOB sub-dirs RELATIVE ${py_src_abs_dir} *)
+        file(GLOB sub-dirs RELATIVE ${py_src_abs_dir} ${py_src_abs_dir}/*)
         foreach(sub-dir ${sub-dirs})
             if(EXISTS "${py_src_abs_dir}/${sub-dir}/__init__.py")
                 _pods_install_python_package(${py_src_abs_dir}/${sub-dir} ${sub-dir})
