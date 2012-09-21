@@ -4,6 +4,7 @@ import os
 import sys
 import shutil
 from xml.dom import minidom
+import re
 
 import _pods.data
 from _pods.version import PODS_VERSION
@@ -243,6 +244,8 @@ def update_pod_func(args):
         #    fail("Unable to parse " + podxml_fname)
         #    continue
 
+        makefile_header_re = re.compile('# Default.*makefile distributed with pods version')
+
         # check each template file listed above to see if it's in the pod
         for i in range(0,len(toreplace)):
             template_file, template_file_contents, default_answer = toreplace[i]
@@ -262,11 +265,11 @@ def update_pod_func(args):
                 s = raw_input("Overwrite %s? [y/n/a/s (a/s: replace/skip all %s's )] " % ((dst_fname).strip(), template_file))
 
             if s in "ya" and template_file == "Makefile":
-                makefile_header_len = 50 # ie: "# Default makefile distributed with pods version"
-                if dst_file_contents[0:makefile_header_len]!= template_file_contents[0:makefile_header_len]:
+                if makefile_header_re.match(dst_file_contents) == None:
                     s=""
                     while not s or s not in "yn":
                         s = raw_input("Makefile does not have pods header, are you sure you want to overwrite? [y/n] ")
+
 
             if s == "a":
                 s = "y"

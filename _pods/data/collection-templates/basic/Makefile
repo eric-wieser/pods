@@ -1,3 +1,5 @@
+# Basic collection makefile distributed with pods version: 12.09.21
+
 default_target: all
 
 # get a list of subdirs to build by reading tobuild.txt
