@@ -223,12 +223,14 @@ function(_pods_install_python_package py_src_dir py_module_name)
 
     if(EXISTS "${py_src_dir}/__init__.py")
         #install the single module
-        file(GLOB_RECURSE py_files   ${py_src_dir}/*.py)
-        foreach(py_file ${py_files})
-            file(RELATIVE_PATH __tmp_path ${py_src_dir} ${py_file})
-            get_filename_component(__tmp_dir ${__tmp_path} PATH)
-            install(FILES ${py_file}
-                DESTINATION "${python_install_dir}/${py_module_name}/${__tmp_dir}")
+        file(GLOB_RECURSE module_files   ${py_src_dir}/*)
+        foreach(file ${module_files})
+            if(NOT file MATCHES ".*\\.svn.*|.*\\.pyc|.*[~#]")
+                file(RELATIVE_PATH __tmp_path ${py_src_dir} ${file})
+                get_filename_component(__tmp_dir ${__tmp_path} PATH)
+                install(FILES ${file}
+                    DESTINATION "${python_install_dir}/${py_module_name}/${__tmp_dir}")
+            endif()
         endforeach()
     else()
         message(FATAL_ERROR "${py_src_dir} is not a python package!\n")

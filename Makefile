@@ -1,5 +1,3 @@
-# Default pod makefile distributed with pods version: 12.11.14
-
 default_target: all
 
 # Default to a less-verbose build.  If you want all the gory compiler output,
@@ -11,8 +9,7 @@ $(VERBOSE).SILENT:
 #   If not, search up to four parent directories for a 'build' directory.
 #   Otherwise, use ./build.
 ifeq "$(BUILD_PREFIX)" ""
-BUILD_PREFIX:=$(shell for pfx in ./ .. ../.. ../../.. ../../../..; do d=`pwd`/$$pfx/build;\
-               if [ -d $$d ]; then echo $$d; exit 0; fi; done; echo `pwd`/build)
+BUILD_PREFIX:=/usr/local/
 endif
 # create the build directory if needed, and normalize its path name
 BUILD_PREFIX:=$(shell mkdir -p $(BUILD_PREFIX) && cd $(BUILD_PREFIX) && echo `pwd`)

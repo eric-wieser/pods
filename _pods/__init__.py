@@ -205,7 +205,8 @@ def update_pod_func(args):
 
     core_files = [ ("basic", "cmake/pods.cmake"),
                   ("basic", "Makefile"),
-                  ("lcm", "cmake/lcmtypes.cmake") ]
+                  ("lcm", "cmake/lcmtypes.cmake"),
+		  ("matlab", "cmake/matlab_pods.cmake") ]
 
     # read all template files into memory, for quick compare
     toreplace = []
