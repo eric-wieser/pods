@@ -191,14 +191,14 @@ function(pods_install_python_script script_name python_module_or_file)
         file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${script_name} 
             "#!/bin/sh\n"
             "export PYTHONPATH=${python_install_dir}:${python_old_install_dir}:\${PYTHONPATH}\n"
-            "exec ${PYTHON_EXECUTABLE} ${pods_scripts_dir}/${py_script_name} $*\n")    
+            "exec ${PYTHON_EXECUTABLE} ${pods_scripts_dir}/${py_script_name} \"$@\"\n")    
     else()
         get_filename_component(py_module ${python_module_or_file} NAME) #todo: check whether module exists?
         # write the bash script file
         file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${script_name} 
             "#!/bin/sh\n"
             "export PYTHONPATH=${python_install_dir}:${python_old_install_dir}:\${PYTHONPATH}\n"
-            "exec ${PYTHON_EXECUTABLE} -m ${py_module} $*\n")
+            "exec ${PYTHON_EXECUTABLE} -m ${py_module} \"$@\"\n")
     endif()
     # install it...
     install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${script_name} DESTINATION bin)
